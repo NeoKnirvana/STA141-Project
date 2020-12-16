@@ -1,0 +1,52 @@
+---
+title: "Group Project"
+author: "Nicholas Kwak"
+date: "12/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Visualization/project Design
+# Import dataset
+
+```{r}
+main.data = read.csv("BigML_Dataset_5f50a62c2fb31c516d000176.csv")
+```
+
+# Import tidyverse and ggplot2
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+# Keep relevent data, remove everything else
+
+```{r}
+# Select also changed order of columns.  Ratings and popularity are less relevent for questions we asked.
+movie.data = main.data %>% select(movie,certificate,duration,
+                                  genre, gross, awards_wins, awards_nominations, 
+                                  Oscar_nominated, rate, metascore, popularity)
+```
+
+```{r}
+# Save modifications to csv file.
+write.csv(movie.data, "movie.data.csv")
+
+```
+
+# Data with only Oscars
+```{r}
+oscar.data = movie.data  %>% filter(Oscar_nominated > 0)
+boxplot(awards_wins~Oscar_nominated, data = oscar.data,
+        xlab = "Number of Oscar Nominations",
+        ylab = "Awards Won")
+```
+
+
+```{r}
+boxplot(awards_wins~certificate, data = movie.data,
+        xlab = "Age Demographic",
+        ylab = "Awards Won")
+```
