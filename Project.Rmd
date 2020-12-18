@@ -36,17 +36,52 @@ write.csv(movie.data, "movie.data.csv")
 
 ```
 
-# Data with only Oscars
+# Boxplot relating the number of nominations with total number of awards the film got (includes awards unrelated to Oscars).  Removed outliers 
 ```{r}
-oscar.data = movie.data  %>% filter(Oscar_nominated > 0)
-boxplot(awards_wins~Oscar_nominated, data = oscar.data,
+boxplot(awards_wins~Oscar_nominated, data = movie.data,
         xlab = "Number of Oscar Nominations",
-        ylab = "Awards Won")
+        ylab = "Awards Won",
+        outline = FALSE)
+```
+
+Using ggplot2
+```{r}
+ggplot(data = movie.data, aes(x=Oscar_nominated, y=awards_wins)) +
+  geom_boxplot(aes(group = Oscar_nominated), fill = "gold", outlier.shape = NA) +
+  labs(title = "Boxplot relating Oscar Nominations to Awards Won", 
+       x = "Number of Oscar Nominations", y="Total Number of Awards Won")
+```
+
+# Removed blank entries for certificate using filter.  
+```{r}
+rating = filter(movie.data,certificate != "")
+boxplot(awards_wins~certificate, data = rating,
+        xlab = "Age Demographic",
+        ylab = "Awards Won",
+        outline = FALSE)
 ```
 
 
+Using ggplot2
 ```{r}
-boxplot(awards_wins~certificate, data = movie.data,
-        xlab = "Age Demographic",
-        ylab = "Awards Won")
+ggplot(data = rating, aes(x=certificate, y=awards_wins)) +
+  geom_boxplot(aes(group = certificate, fill = certificate), outlier.shape = NA) +
+  labs(title = "Boxplot relating Age Rating and Awards Won", 
+       x = "Age Rating", y="Total Number of Awards Won",
+       fill = "Legend")
+
+```
+
+# Scatterplot with both merged (won't really help I think)
+```{r}
+ggplot(data = rating, aes(x=Oscar_nominated, y=awards_wins, color = certificate), outlier.shape = NA) + geom_point() + 
+  labs(title = "Boxplot relating Age Rating and Awards Won", 
+       x = "Age Rating", y="Total Number of Awards Won",
+       fill = "Legend")
+
+```
+
+#Graph using profit
+```{r}
+
 ```
